@@ -19,10 +19,11 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.postgresql:postgresql'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3' // 最新のバージョンに置き換える
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	implementation files('./libs/ojdbc8.jar')
+//	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+//	implementation files('./libs/ojdbc8.jar')
 }
 
 tasks.named('test') {

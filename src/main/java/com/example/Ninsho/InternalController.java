@@ -29,11 +29,7 @@ public class InternalController {
     RegistStorageInfoService registStorageInfoService;
     @Autowired
     SearchInfoService searchInfoService;
-    class Branch {
-        private String storageInfoId;
-        private String storageName;
-        private String memo;
-    }
+
     class ResponseObject {
         @JsonProperty("http_sts")
         int http_sts = 0;
@@ -111,7 +107,7 @@ public class InternalController {
     }
 
     @PostMapping("/api/cert")
-    public String certUser(@RequestBody UserInDto userInDto) {
+    public String certUserController(@RequestBody UserInDto userInDto) {
         String loginStatus = ninshoService.certificete(userInDto.getUserId(), userInDto.getPass());
 
         //TODO 認証履歴にレコードぶっこむ処理を作っときたい。
