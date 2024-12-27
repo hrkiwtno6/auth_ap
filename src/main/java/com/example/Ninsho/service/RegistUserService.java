@@ -1,5 +1,6 @@
-package com.example.Ninsho;
+package com.example.Ninsho.service;
 
+import com.example.Ninsho.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

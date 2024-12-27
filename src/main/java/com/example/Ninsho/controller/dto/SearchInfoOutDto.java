@@ -1,4 +1,4 @@
-package com.example.Ninsho;
+package com.example.Ninsho.controller.dto;
 
 public class SearchInfoOutDto {
     private String groupId;

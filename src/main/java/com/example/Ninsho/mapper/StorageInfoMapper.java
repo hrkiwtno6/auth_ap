@@ -1,9 +1,9 @@
-package com.example.Ninsho;
+package com.example.Ninsho.mapper;
 
+import com.example.Ninsho.entity.PasswordInfo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Mapper
 public interface StorageInfoMapper {

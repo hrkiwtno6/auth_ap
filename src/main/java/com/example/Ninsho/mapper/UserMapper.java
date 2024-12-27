@@ -1,8 +1,8 @@
-package com.example.Ninsho;
+package com.example.Ninsho.mapper;
 
+import com.example.Ninsho.entity.User;
 import org.apache.ibatis.annotations.*;
 
-import java.time.Instant;
 import java.util.List;
 
 @Mapper

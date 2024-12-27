@@ -1,4 +1,4 @@
-package com.example.Ninsho;
+package com.example.Ninsho.entity;
 
 public class User {
     public User(String groupId,String userId, String pass) {
