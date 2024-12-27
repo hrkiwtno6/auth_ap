@@ -1,4 +1,4 @@
-package com.example.Ninsho;
+package com.example.Ninsho.entity;
 
 public class StorageInfo {
     public StorageInfo(String groupId, String storageInfoId, String storageInfoName) {

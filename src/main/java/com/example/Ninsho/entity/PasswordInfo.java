@@ -1,19 +1,18 @@
-package com.example.Ninsho;
+package com.example.Ninsho.entity;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-public class RegistInfoInDto {
+public class PasswordInfo {
     private final String groupId;
     private final String storageInfoId;
     private final String storageInfoName;
     private final String storageInfoPass;
     private final String storageInfoMemo;
-    public RegistInfoInDto(JsonNode jsonNode) {
-        this.groupId = jsonNode.get("groupId").textValue();
-        this.storageInfoId = jsonNode.get("storageInfoId").textValue();
-        this.storageInfoName = jsonNode.get("storageInfoName").textValue();
-        this.storageInfoPass = jsonNode.get("storageInfoPass").textValue();
-        this.storageInfoMemo = jsonNode.get("storageInfoMemo").textValue();
+
+    public PasswordInfo(String groupId, String storageInfoId, String storageInfoName, String storageInfoPass, String storageInfoMemo) {
+        this.groupId = groupId;
+        this.storageInfoId = storageInfoId;
+        this.storageInfoName = storageInfoName;
+        this.storageInfoPass = storageInfoPass;
+        this.storageInfoMemo = storageInfoMemo;
     }
 
     public String getGroupId() {
