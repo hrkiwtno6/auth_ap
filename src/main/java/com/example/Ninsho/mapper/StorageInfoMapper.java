@@ -21,7 +21,7 @@ public interface StorageInfoMapper {
                     "STORAGE_INFO_NAME, " +
                     "STORAGE_INFO_PASS, " +
                     "STORAGE_INFO_MEMO " +
-                    "FROM STORAGE_INFO " +
+                    "FROM TR_STORAGE_INFO_MANAGE " +
                     "WHERE STORAGE_INFO_ID = #{storageInfoId}"
     )
     ArrayList<PasswordInfo> selectByPrimaryKey(String storageInfoId);
@@ -40,20 +40,26 @@ public interface StorageInfoMapper {
                     "STORAGE_INFO_NAME, " +
                     "STORAGE_INFO_PASS, " +
                     "STORAGE_INFO_MEMO " +
-                    "FROM STORAGE_INFO " +
+                    "FROM TR_STORAGE_INFO_MANAGE " +
                     "WHERE GROUP_ID = #{groupId}"
     )
     ArrayList<PasswordInfo> selectALL(String groupId);
     @Insert(
-            "INSERT INTO STORAGE_INFO " +
+            "INSERT INTO TR_STORAGE_INFO_MANAGE " +
                     "(GROUP_ID, STORAGE_INFO_ID, STORAGE_INFO_NAME, STORAGE_INFO_PASS, STORAGE_INFO_MEMO) " +
                     "VALUES " +
                     "(#{groupId}," +
                     " #{storageInfoId}," +
-                    " #{storageInfoName}" +
-                    " #{storageInfoPass}" +
+                    " #{storageInfoName}," +
+                    " #{storageInfoPass}," +
                     " #{storageInfoMemo}" +
+
                     ")"
     )
-    void regist(String groupId, String storageInfoId, String storageInfoName, String storageInfoPass, String storageInfoMemo);
+    void regist(String groupId, int storageInfoId, String storageInfoName, String storageInfoPass, String storageInfoMemo);
+
+    @Select(
+            "SELECT nextval('storage_info_id_seq');"
+    )
+    int generateSeq();
 }
