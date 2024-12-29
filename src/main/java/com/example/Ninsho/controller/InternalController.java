@@ -1,9 +1,7 @@
 package com.example.Ninsho.controller;
 
 import com.example.Ninsho.*;
-import com.example.Ninsho.controller.dto.RegistInfoInDto;
-import com.example.Ninsho.controller.dto.SearchInfoInDto;
-import com.example.Ninsho.controller.dto.UserInDto;
+import com.example.Ninsho.controller.dto.*;
 import com.example.Ninsho.entity.PasswordInfo;
 import com.example.Ninsho.service.RegistStorageInfoService;
 import com.example.Ninsho.service.RegistUserService;
@@ -103,6 +101,9 @@ public class InternalController {
 
     @PostMapping("/api/registInfo")
     public ResponseEntity<String> registInfoController(RequestEntity<String> requestEntity) {
+        //OutDtoのオブジェクトを＜＞に詰めておく。
+        //自分で基底オブジェクトを作ってその中にOutDtoを詰めてみるのもあり。（デフォルト値を詰める必要がない。）
+        //基底オブジェクトがResponseEntityを使って書く三弾構成にする。
         final JsonNode requestJson;
         try{
             requestJson = objectMapper.readTree(requestEntity.getBody());
@@ -110,8 +111,9 @@ public class InternalController {
             return ResponseEntity.badRequest().body("request body is invalid");
         }
         RegistInfoInDto inDto = new RegistInfoInDto(requestJson);
-        registStorageInfoService.registStrageInfo(inDto.getGroupId(), inDto.getStorageInfoId(), inDto.getStorageInfoName(), inDto.getStorageInfoPass(), inDto.getStorageInfoMemo());
-        return ResponseEntity.ok().body("registInfo");
+        int storageInfoId = registStorageInfoService.registStrageInfo(inDto.getGroupId(),inDto.getStorageInfoName(), inDto.getStorageInfoPass(), inDto.getStorageInfoMemo());
+        RegistInfoOutDto outDto = new RegistInfoOutDto(storageInfoId);
+        return ResponseEntity.ok().body(outDto.getStorageInfoId());
     }
 
     @PostMapping("/api/cert")
@@ -143,6 +145,7 @@ public class InternalController {
 
     final SearchInfoInDto inDto = new SearchInfoInDto();
         final ArrayList<PasswordInfo> passwordInfoList = searchInfoService.exec(inDto.getGroupId());
-        return ResponseEntity.ok().body("searchInfo");
+        SearchInfoOutDto outDto = new SearchInfoOutDto(passwordInfoList);
+        return ResponseEntity.ok().body(outDto.getJson().toString());
     }
 }
