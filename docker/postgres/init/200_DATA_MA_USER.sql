@@ -1,8 +1,7 @@
 INSERT INTO MA_USER VALUES(
-    1,
-    1,
+    0,
     'test',
     'test',
-    '20240101000000000000',
-    '20240101000000000000'
+    CURRENT_TIMESTAMP,
+    '0001-01-01 00:00:00'
 );

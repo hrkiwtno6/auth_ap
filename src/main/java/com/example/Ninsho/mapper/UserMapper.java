@@ -8,29 +8,34 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     @ConstructorArgs({
-            @Arg(column = "GROUP_ID", javaType = String.class,name = "groupId"),
-            @Arg(column = "USER_ID", javaType = String.class, id = true,name = "userId"),
-            @Arg(column = "PASS", javaType = String.class, id = true,name = "pass")
+            @Arg(column = "USER_ID", javaType = int.class, id = true,name = "userId"),
+            @Arg(column = "LOGIN_ID", javaType = String.class, name = "loginId"),
+            @Arg(column = "LOGIN_PW", javaType = String.class, name = "loginPw")
     })
     @Select(
             "SELECT " +
-                    "GROUP_ID, " +
                     "USER_ID, " +
-                    "PASS " +
-                    "FROM USERS " +
-                    "WHERE USER_ID = #{userId} AND " +
-                    "PASS = #{pass}"
+                    "LOGIN_ID, " +
+                    "LOGIN_PW " +
+                    "FROM MA_USER " +
+                    "WHERE LOGIN_ID = #{loginId} AND " +
+                    "LOGIN_PW = #{loginPw}"
     )
-    List<User> selectByPrimaryKey(String userId, String pass);
+    List<User> selectByPrimaryKey(String loginId, String loginPw);
 
     @Insert(
             "INSERT INTO USERS " +
-                    "(GROUP_ID, USER_ID, PASS) " +
+                    "(USER_ID, LOGIN_ID, LOGIN_PW) " +
                     "VALUES " +
-                    "(#{groupId}," +
+                    "(" +
                     " #{userId}," +
-                    " #{pass}" +
+                    " #{loginId}," +
+                    " #{loginPw}" +
                     ")"
     )
-    void regist(String groupId, String userId, String pass);
+    void regist(int userId, String loginId, String loginPw);
+    @Select(
+            "SELECT nextval('user_id_seq');"
+    )
+    int generateSeq();
 }
