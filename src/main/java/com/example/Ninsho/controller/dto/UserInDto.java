@@ -1,34 +1,22 @@
 package com.example.Ninsho.controller.dto;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 public class UserInDto {
-    private String groupId;
-    private String userId;
-    private String pass;
+    private final String loginId;
+    private final String loginPw;
 
-    // Getters and Setters
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public String getUserId() {
-        return userId;
+    public UserInDto(JsonNode jsonNode) {
+        this.loginId = jsonNode.get("loginId").textValue();
+        this.loginPw = jsonNode.get("loginPw").textValue();
     }
 
 
-    public String getPass() {
-        return pass;
+    public String getLoginPw() {
+        return loginPw;
     }
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
+    public String getLoginId() {
+        return loginId;
     }
-
-    public void setId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-
 }

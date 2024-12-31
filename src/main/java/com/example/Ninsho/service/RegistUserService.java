@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 public class RegistUserService {
     @Autowired
     private UserMapper userMapper;
-    public void registUser(String groupId, String id, String pass) {
-        userMapper.regist(groupId, id, pass);
+    public int exec(String loginId, String loginPw) {
+        int userId = userMapper.generateSeq();
+        userMapper.regist(userId, loginId, loginPw);
+        return userId;
     }
 }

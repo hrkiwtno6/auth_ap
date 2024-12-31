@@ -1,6 +1,6 @@
 package com.example.Ninsho.controller.dto;
 
-import com.example.Ninsho.entity.PasswordInfo;
+import com.example.Ninsho.entity.StorageInfo;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -11,22 +11,22 @@ import java.util.List;
 public class SearchInfoOutDto {
     private final JsonNode json;
 
-    public SearchInfoOutDto(List<PasswordInfo> passwordInfoList) {
-        ObjectMapper mapper = new ObjectMapper();
-        ArrayNode arrayNode = mapper.createArrayNode();
+    public SearchInfoOutDto(List<StorageInfo> storageInfoList) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayNode arrayNode = objectMapper.createArrayNode();
 
-        for (PasswordInfo info : passwordInfoList) {
-            ObjectNode infoNode = mapper.createObjectNode();
-            infoNode.put("groupId", info.getGroupId());
-            infoNode.put("storageInfoId", info.getStorageInfoId());
-            infoNode.put("storageInfoName", info.getStorageInfoName());
-            infoNode.put("storageInfoPass", info.getStorageInfoPass());
-            infoNode.put("storageInfoMemo", info.getStorageInfoMemo());
-            arrayNode.add(infoNode);
+        for (StorageInfo storageInfo : storageInfoList) {
+            ObjectNode storageInfoNode = objectMapper.createObjectNode();
+            storageInfoNode.put("groupId", storageInfo.getGroupId());
+            storageInfoNode.put("storageInfoId", storageInfo.getStorageInfoId());
+            storageInfoNode.put("storageInfoName", storageInfo.getStorageInfoName());
+            storageInfoNode.put("storageInfoPass", storageInfo.getStorageInfoPass());
+            storageInfoNode.put("storageInfoMemo", storageInfo.getStorageInfoMemo());
+            arrayNode.add(storageInfoNode);
         }
 
-        ObjectNode rootNode = mapper.createObjectNode();
-        rootNode.set("passwordInfoList", arrayNode);
+        ObjectNode rootNode = objectMapper.createObjectNode();
+        rootNode.set("storageInfoList", arrayNode);
         this.json = rootNode;
     }
 

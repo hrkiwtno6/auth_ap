@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class RegistStorageInfoService {
     @Autowired
     private StorageInfoMapper storageInfoMapper;
-    public int registStrageInfo(String groupId, String storageInfoName, String storageInfoPass, String stratgeInfoMemo) {
+    public int exec(String groupId, String storageInfoName, String storageInfoPass, String stratgeInfoMemo) {
         int storageInfoId = storageInfoMapper.generateSeq();
         storageInfoMapper.regist(groupId, storageInfoId, storageInfoName, storageInfoPass, stratgeInfoMemo);
         return storageInfoId;

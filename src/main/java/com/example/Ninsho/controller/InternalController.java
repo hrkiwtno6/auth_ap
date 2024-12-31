@@ -2,7 +2,8 @@ package com.example.Ninsho.controller;
 
 import com.example.Ninsho.*;
 import com.example.Ninsho.controller.dto.*;
-import com.example.Ninsho.entity.PasswordInfo;
+import com.example.Ninsho.entity.StorageInfo;
+import com.example.Ninsho.entity.User;
 import com.example.Ninsho.service.RegistStorageInfoService;
 import com.example.Ninsho.service.RegistUserService;
 import com.example.Ninsho.service.SearchInfoService;
@@ -84,13 +85,29 @@ public class InternalController {
     }
 
     @PostMapping("/registUser")
-    public void registUser(@RequestBody UserInDto userInDto) {
-        registUserService.registUser(userInDto.getGroupId(), userInDto.getUserId(), userInDto.getPass());
+    public ResponseEntity<String> registUser(RequestEntity<String> requestEntity) {
+        final JsonNode requestJson;
+        try{
+            requestJson = objectMapper.readTree(requestEntity.getBody());
+        }catch (JsonProcessingException e){
+            return ResponseEntity.badRequest().body("request body is invalid");
+        }
+        UserInDto inDto = new UserInDto(requestJson);
+        int userId = registUserService.exec(inDto.getLoginId(), inDto.getLoginPw());
+        UserOutDto outDto = new UserOutDto(userId);
+        return ResponseEntity.ok().body(outDto.getUserId());
     }
 
     @PostMapping("/api/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
-        String loginStatus = ninshoService.certificete(request.get("id"), request.get("pass"));
+    public ResponseEntity<String> login(RequestEntity<String> requestEntity) {
+        final JsonNode requestJson;
+        try{
+            requestJson = objectMapper.readTree(requestEntity.getBody());
+        }catch (JsonProcessingException e){
+            return ResponseEntity.badRequest().body("request body is invalid");
+        }
+        UserInDto inDto = new UserInDto(requestJson);
+        String loginStatus = ninshoService.exec(inDto.getLoginId(), inDto.getLoginPw());
         if (loginStatus.equals(NinshoConstants.LOGIN_SUCCESSFUL)) {
             return ResponseEntity.ok().build();
         } else {
@@ -111,28 +128,11 @@ public class InternalController {
             return ResponseEntity.badRequest().body("request body is invalid");
         }
         RegistInfoInDto inDto = new RegistInfoInDto(requestJson);
-        int storageInfoId = registStorageInfoService.registStrageInfo(inDto.getGroupId(),inDto.getStorageInfoName(), inDto.getStorageInfoPass(), inDto.getStorageInfoMemo());
+        int storageInfoId = registStorageInfoService.exec(inDto.getGroupId(),inDto.getStorageInfoName(), inDto.getStorageInfoPass(), inDto.getStorageInfoMemo());
         RegistInfoOutDto outDto = new RegistInfoOutDto(storageInfoId);
         return ResponseEntity.ok().body(outDto.getStorageInfoId());
     }
 
-    @PostMapping("/api/cert")
-    public String certUserController(@RequestBody UserInDto userInDto) {
-        String loginStatus = ninshoService.certificete(userInDto.getUserId(), userInDto.getPass());
-
-        //TODO 認証履歴にレコードぶっこむ処理を作っときたい。
-        //TODO error_msgに値を詰めて返却するようにしたい。
-        responseObject.setHttp_sts(HttpStatus.OK.value());
-        responseObject.setRes_sts(loginStatus);
-        String jsonString = null;
-        try {
-            // UserオブジェクトをJSON文字列に変換
-            jsonString = objectMapper.writeValueAsString(responseObject);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return jsonString;
-    }
     @PostMapping("/api/search")
 
     public ResponseEntity<String> searchInfoController(RequestEntity<String> requestEntity) {
@@ -143,9 +143,9 @@ public class InternalController {
         return ResponseEntity.badRequest().body("request body is invalid");
     }
 
-    final SearchInfoInDto inDto = new SearchInfoInDto();
-        final ArrayList<PasswordInfo> passwordInfoList = searchInfoService.exec(inDto.getGroupId());
-        SearchInfoOutDto outDto = new SearchInfoOutDto(passwordInfoList);
+    final SearchInfoInDto inDto = new SearchInfoInDto(requestJson);
+        final ArrayList<StorageInfo> storageInfoList = searchInfoService.exec(inDto.getGroupId());
+        SearchInfoOutDto outDto = new SearchInfoOutDto(storageInfoList);
         return ResponseEntity.ok().body(outDto.getJson().toString());
     }
 }
