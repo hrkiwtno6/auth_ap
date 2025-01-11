@@ -17,8 +17,8 @@ public class GetStorageInfoListOutDto {
 
         for (StorageInfo storageInfo : storageInfoList) {
             ObjectNode storageInfoNode = objectMapper.createObjectNode();
-            storageInfoNode.put("groupId", storageInfo.getGroupId().toString());
-            storageInfoNode.put("storageInfoId", storageInfo.getStorageInfoId());
+            storageInfoNode.put("groupId", storageInfo.getGroupId());
+            storageInfoNode.put("storageInfoId", String.valueOf(storageInfo.getStorageInfoId()));
             storageInfoNode.put("storageInfoName", storageInfo.getStorageInfoName());
             storageInfoNode.put("storageInfoPass", storageInfo.getStorageInfoPass());
             storageInfoNode.put("storageInfoMemo", storageInfo.getStorageInfoMemo());
