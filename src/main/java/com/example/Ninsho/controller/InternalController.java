@@ -99,25 +99,22 @@ public class InternalController {
     }
 
     @PostMapping("/api/login")
-    public ResponseEntity<String> login(RequestEntity<String> requestEntity) {
+    public ResponseEntity<UserOutDto> login(RequestEntity<String> requestEntity) {
         final JsonNode requestJson;
         try{
             requestJson = objectMapper.readTree(requestEntity.getBody());
         }catch (JsonProcessingException e){
-            return ResponseEntity.badRequest().body("request body is invalid");
+            return ResponseEntity.badRequest().body(null);
+            //TODO レスポンスにRegistInfoOutDtoに対してエラーメッセージをつけて返すのか？エラーのthrow方式のお作法がわからない。
         }
         UserInDto inDto = new UserInDto(requestJson);
-        String loginStatus = ninshoService.exec(inDto.getLoginId(), inDto.getLoginPw());
-        if (loginStatus.equals(NinshoConstants.LOGIN_SUCCESSFUL)) {
-            return ResponseEntity.ok().build();
-        } else {
-            //TODO error_msgに値を詰めて返却するようにしたい。下にそのコードを書く。
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        int userId = ninshoService.exec(inDto.getLoginId(), inDto.getLoginPw());
+        UserOutDto outDto = new UserOutDto(userId);
+        return ResponseEntity.ok().body(outDto);
     }
 
     @PostMapping("/api/registInfo")
-    public ResponseEntity<String> registInfoController(RequestEntity<String> requestEntity) {
+    public ResponseEntity<RegistInfoOutDto> registInfoController(RequestEntity<String> requestEntity) {
         //OutDtoのオブジェクトを＜＞に詰めておく。
         //自分で基底オブジェクトを作ってその中にOutDtoを詰めてみるのもあり。（デフォルト値を詰める必要がない。）
         //基底オブジェクトがResponseEntityを使って書く三弾構成にする。
@@ -125,12 +122,13 @@ public class InternalController {
         try{
             requestJson = objectMapper.readTree(requestEntity.getBody());
         }catch (JsonProcessingException e){
-            return ResponseEntity.badRequest().body("request body is invalid");
+            return ResponseEntity.badRequest().body(null);
+            //TODO レスポンスにRegistInfoOutDtoに対してエラーメッセージをつけて返すのか？エラーのthrow方式のお作法がわからない。
         }
         RegistInfoInDto inDto = new RegistInfoInDto(requestJson);
         int storageInfoId = registStorageInfoService.exec(inDto.getGroupId(),inDto.getStorageInfoName(), inDto.getStorageInfoPass(), inDto.getStorageInfoMemo());
         RegistInfoOutDto outDto = new RegistInfoOutDto(storageInfoId);
-        return ResponseEntity.ok().body(outDto.getStorageInfoId());
+        return ResponseEntity.ok().body(outDto);
     }
 
     @PostMapping("/api/search")
