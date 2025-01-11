@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 public class DeleteStorageInfoService {
     @Autowired
     private StorageInfoMapper storageInfoMapper;
-    public int exec(String groupId, int storageInfoId, String storageInfoName, String storageInfoPass, String stratgeInfoMemo) {
-        int result = storageInfoMapper.update(groupId, storageInfoId, storageInfoName, storageInfoPass, stratgeInfoMemo);
+    public int exec(String groupId, int storageInfoId) {
+        int result = storageInfoMapper.softDelete(groupId, storageInfoId);
         if (result != 1) {
-            throw new RuntimeException("Failed to update storageInfo.");
+            throw new RuntimeException("Failed to softDelete storageInfo.");
         }
         return storageInfoId;
     }

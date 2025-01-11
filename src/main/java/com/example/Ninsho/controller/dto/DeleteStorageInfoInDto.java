@@ -6,9 +6,9 @@ public class DeleteStorageInfoInDto {
     private final String groupId;
     private final String storageInfoId;
 
-    public DeleteStorageInfoInDto(String groupId, String userId, String storageInfoId) {
-        this.groupId = groupId;
-        this.storageInfoId = storageInfoId;
+    public DeleteStorageInfoInDto(JsonNode jsonNode) {
+        this.groupId = jsonNode.get("groupId").textValue();
+        this.storageInfoId = jsonNode.get("storageInfoId").textValue();
     }
 
     public String getGroupId() {

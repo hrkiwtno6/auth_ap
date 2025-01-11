@@ -22,7 +22,9 @@ public interface StorageInfoMapper {
                     "STORAGE_INFO_PASS, " +
                     "STORAGE_INFO_MEMO " +
                     "FROM TR_STORAGE_INFO_MANAGE " +
-                    "WHERE STORAGE_INFO_ID = #{storageInfoId}" +
+                    "WHERE " +
+                    "STORAGE_INFO_ID = #{storageInfoId} AND " +
+                    "SOFT_DELETE_DIV = '0' " +
                     "ORDER BY STORAGE_INFO_ID"
     )
     ArrayList<StorageInfo> selectByPrimaryKey(int storageInfoId);
@@ -42,7 +44,9 @@ public interface StorageInfoMapper {
                     "STORAGE_INFO_PASS, " +
                     "STORAGE_INFO_MEMO " +
                     "FROM TR_STORAGE_INFO_MANAGE " +
-                    "WHERE GROUP_ID = #{groupId}" +
+                    "WHERE " +
+                    "GROUP_ID = #{groupId} AND " +
+                    "SOFT_DELETE_DIV = '0' " +
                     "ORDER BY GROUP_ID,STORAGE_INFO_NAME"
     )
     ArrayList<StorageInfo> selectALL(String groupId);
@@ -68,9 +72,26 @@ public interface StorageInfoMapper {
                     "LAST_UPDATED_TIMESTAMP = CURRENT_TIMESTAMP " +
                     "WHERE " +
                     "GROUP_ID = #{groupId} AND " +
-                    "STORAGE_INFO_ID = #{storageInfoId}"
+                    "STORAGE_INFO_ID = #{storageInfoId} AND " +
+                    "SOFT_DELETE_DIV = '0' "
     )int update(String groupId, int storageInfoId, String storageInfoName, String storageInfoPass, String storageInfoMemo);
 
+    @Update(
+            "UPDATE TR_STORAGE_INFO_MANAGE " +
+                    "SET " +
+                    "SOFT_DELETE_DIV = '1', " +
+                    "LAST_UPDATED_TIMESTAMP = CURRENT_TIMESTAMP " +
+                    "WHERE " +
+                    "GROUP_ID = #{groupId} AND " +
+                    "STORAGE_INFO_ID = #{storageInfoId}"
+    ) int softDelete(String groupId, int storageInfoId);
+
+    @Delete(
+            "DELETE TR_STORAGE_INFO_MANAGE " +
+                    "WHERE " +
+                    "GROUP_ID = #{groupId} AND " +
+                    "STORAGE_INFO_ID = #{storageInfoId}"
+    ) int hardDelete(String groupId, int storageInfoId);
     @Select(
             "SELECT nextval('storage_info_id_seq');"
     )
