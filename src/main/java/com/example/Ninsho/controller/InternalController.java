@@ -37,69 +37,28 @@ public class InternalController {
     @Autowired
     SearchInfoService searchInfoService;
 
-    class ResponseObject {
-        @JsonProperty("http_sts")
-        int http_sts = 0;
-        @JsonProperty("res_sts")
-        String res_sts = null;
-        @JsonProperty("error_msg")
-        String error_msg = "";
-
-        public void setHttp_sts(int http_sts) {
-            this.http_sts = http_sts;
-        }
-
-        public void setRes_sts(String res_sts) {
-            this.res_sts = res_sts;
-        }
-
-        public void setError_msg(String error_msg) {
-            this.error_msg = error_msg;
-        }
-    }
-
-
-
-    @Component
-    public class RequestBodyHandler {
-        private final ObjectMapper objectMapper;
-
-        public RequestBodyHandler(ObjectMapper objectMapper) {
-            this.objectMapper = objectMapper;
-        }
-
-        public <T> T convertTo(RequestBody requestBody, Class<T> targetClass) {
-            try {
-                return objectMapper.readValue(requestBody.toString(), targetClass);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException("Failed to convert request body to " + targetClass.getSimpleName(), e);
-            }
-        }
-    }
-
-    ResponseObject responseObject = new ResponseObject();
-
     @GetMapping("/hello")
-    public String hello() {
+    public String v1Hello() {
         return "Hello, World!";
     }
 
     @PostMapping("/registUser")
-    public ResponseEntity<String> registUser(RequestEntity<String> requestEntity) {
+    public ResponseEntity<UserOutDto> v1RegistUser(RequestEntity<String> requestEntity) {
         final JsonNode requestJson;
         try{
             requestJson = objectMapper.readTree(requestEntity.getBody());
         }catch (JsonProcessingException e){
-            return ResponseEntity.badRequest().body("request body is invalid");
+            return ResponseEntity.badRequest().body(null);
+            //TODO レスポンスにRegistInfoOutDtoに対してエラーメッセージをつけて返すのか？エラーのthrow方式のお作法がわからない。
         }
         UserInDto inDto = new UserInDto(requestJson);
         int userId = registUserService.exec(inDto.getLoginId(), inDto.getLoginPw());
         UserOutDto outDto = new UserOutDto(userId);
-        return ResponseEntity.ok().body(outDto.getUserId());
+        return ResponseEntity.ok().body(outDto);
     }
 
     @PostMapping("/api/login")
-    public ResponseEntity<UserOutDto> login(RequestEntity<String> requestEntity) {
+    public ResponseEntity<UserOutDto> v1Login(RequestEntity<String> requestEntity) {
         final JsonNode requestJson;
         try{
             requestJson = objectMapper.readTree(requestEntity.getBody());
@@ -114,7 +73,7 @@ public class InternalController {
     }
 
     @PostMapping("/api/registInfo")
-    public ResponseEntity<RegistInfoOutDto> registInfoController(RequestEntity<String> requestEntity) {
+    public ResponseEntity<RegistInfoOutDto> v1RegistInfo(RequestEntity<String> requestEntity) {
         //OutDtoのオブジェクトを＜＞に詰めておく。
         //自分で基底オブジェクトを作ってその中にOutDtoを詰めてみるのもあり。（デフォルト値を詰める必要がない。）
         //基底オブジェクトがResponseEntityを使って書く三弾構成にする。
@@ -133,7 +92,7 @@ public class InternalController {
 
     @PostMapping("/api/search")
 
-    public ResponseEntity<String> searchInfoController(RequestEntity<String> requestEntity) {
+    public ResponseEntity<String> v1SearchInfo(RequestEntity<String> requestEntity) {
     final JsonNode requestJson;
     try{
         requestJson = objectMapper.readTree(requestEntity.getBody());
