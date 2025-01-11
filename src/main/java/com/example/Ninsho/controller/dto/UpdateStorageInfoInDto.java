@@ -2,13 +2,15 @@ package com.example.Ninsho.controller.dto;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class RegistInfoInDto {
+public class UpdateStorageInfoInDto {
     private final String groupId;
+    private final String storageInfoId;
     private final String storageInfoName;
     private final String storageInfoPass;
     private final String storageInfoMemo;
-    public RegistInfoInDto(JsonNode jsonNode) {
+    public UpdateStorageInfoInDto(JsonNode jsonNode) {
         this.groupId = jsonNode.get("groupId").textValue();
+        this.storageInfoId = jsonNode.get("storageInfoId").textValue();
         this.storageInfoName = jsonNode.get("storageInfoName").textValue();
         this.storageInfoPass = jsonNode.get("storageInfoPass").textValue();
         this.storageInfoMemo = jsonNode.get("storageInfoMemo").textValue();
@@ -25,5 +27,9 @@ public class RegistInfoInDto {
     }
     public String getStorageInfoMemo() {
         return storageInfoMemo;
+    }
+
+    public String getStorageInfoId() {
+        return storageInfoId;
     }
 }

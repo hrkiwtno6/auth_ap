@@ -2,11 +2,11 @@ package com.example.Ninsho.controller.dto;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class UserInDto {
+public class LoginInDto {
     private final String loginId;
     private final String loginPw;
 
-    public UserInDto(JsonNode jsonNode) {
+    public LoginInDto(JsonNode jsonNode) {
         this.loginId = jsonNode.get("loginId").textValue();
         this.loginPw = jsonNode.get("loginPw").textValue();
     }
