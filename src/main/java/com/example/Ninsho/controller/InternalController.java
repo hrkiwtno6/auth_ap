@@ -37,7 +37,7 @@ public class InternalController {
     }
 
     @PostMapping("/registUser")
-    public ResponseEntity<UserOutDto> v1RegistUser(RequestEntity<String> requestEntity) {
+    public ResponseEntity<LoginOutDto> v1RegistUser(RequestEntity<String> requestEntity) {
         final JsonNode requestJson;
         try {
             requestJson = objectMapper.readTree(requestEntity.getBody());
@@ -45,14 +45,14 @@ public class InternalController {
             return ResponseEntity.badRequest().body(null);
             //TODO レスポンスにRegistInfoOutDtoに対してエラーメッセージをつけて返すのか？エラーのthrow方式のお作法がわからない。
         }
-        UserInDto inDto = new UserInDto(requestJson);
+        LoginInDto inDto = new LoginInDto(requestJson);
         int userId = registUserService.exec(inDto.getLoginId(), inDto.getLoginPw());
-        UserOutDto outDto = new UserOutDto(userId);
+        LoginOutDto outDto = new LoginOutDto(userId);
         return ResponseEntity.ok().body(outDto);
     }
 
     @PostMapping("/api/login")
-    public ResponseEntity<UserOutDto> v1Login(RequestEntity<String> requestEntity) {
+    public ResponseEntity<LoginOutDto> v1Login(RequestEntity<String> requestEntity) {
         final JsonNode requestJson;
         try {
             requestJson = objectMapper.readTree(requestEntity.getBody());
@@ -60,9 +60,9 @@ public class InternalController {
             return ResponseEntity.badRequest().body(null);
             //TODO レスポンスにRegistInfoOutDtoに対してエラーメッセージをつけて返すのか？エラーのthrow方式のお作法がわからない。
         }
-        UserInDto inDto = new UserInDto(requestJson);
+        LoginInDto inDto = new LoginInDto(requestJson);
         int userId = ninshoService.exec(inDto.getLoginId(), inDto.getLoginPw());
-        UserOutDto outDto = new UserOutDto(userId);
+        LoginOutDto outDto = new LoginOutDto(userId);
         return ResponseEntity.ok().body(outDto);
     }
     @PostMapping("/api/getStorageInfoList")
@@ -74,9 +74,9 @@ public class InternalController {
             return ResponseEntity.badRequest().body("request body is invalid");
         }
 
-        final SearchInfoInDto inDto = new SearchInfoInDto(requestJson);
+        final GetStorageInfoListInDto inDto = new GetStorageInfoListInDto(requestJson);
         final ArrayList<StorageInfo> storageInfoList = searchInfoService.exec(inDto.getGroupId());
-        SearchInfoOutDto outDto = new SearchInfoOutDto(storageInfoList);
+        GetStorageInfoListOutDto outDto = new GetStorageInfoListOutDto(storageInfoList);
         return ResponseEntity.ok().body(outDto.getJson().toString());
     }
     @PostMapping("/api/registStorageInfo")

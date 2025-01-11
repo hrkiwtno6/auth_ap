@@ -8,10 +8,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.List;
 
-public class SearchInfoOutDto {
+public class GetStorageInfoListOutDto {
     private final JsonNode json;
 
-    public SearchInfoOutDto(List<StorageInfo> storageInfoList) {
+    public GetStorageInfoListOutDto(List<StorageInfo> storageInfoList) {
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayNode arrayNode = objectMapper.createArrayNode();
 

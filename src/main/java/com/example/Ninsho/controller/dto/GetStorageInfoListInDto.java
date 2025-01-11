@@ -2,9 +2,9 @@ package com.example.Ninsho.controller.dto;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class SearchInfoInDto {
+public class GetStorageInfoListInDto {
     private String groupId;
-    public SearchInfoInDto(JsonNode jsonNode) {
+    public GetStorageInfoListInDto(JsonNode jsonNode) {
         this.groupId = jsonNode.get("groupId").textValue();
     }
     // Getters and Setters
