@@ -1,8 +1,8 @@
 package com.example.Ninsho.controller.dto;
 
-public class RegistInfoOutDto {
+public class UpdateStorageInfoOutDto {
     private final String storageInfoId;
-    public RegistInfoOutDto(int storageInfoId) {
+    public UpdateStorageInfoOutDto(int storageInfoId) {
         this.storageInfoId = String.valueOf(storageInfoId);
     }
     public String getStorageInfoId() {

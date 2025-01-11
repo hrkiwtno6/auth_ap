@@ -53,10 +53,21 @@ public interface StorageInfoMapper {
                     " #{storageInfoName}," +
                     " #{storageInfoPass}," +
                     " #{storageInfoMemo}" +
-
                     ")"
     )
     void regist(String groupId, int storageInfoId, String storageInfoName, String storageInfoPass, String storageInfoMemo);
+
+    @Update(
+            "UPDATE TR_STORAGE_INFO_MANAGE " +
+                    "SET " +
+                    "STORAGE_INFO_NAME = #{storageInfoName}, " +
+                    "STORAGE_INFO_PASS = #{storageInfoPass}, " +
+                    "STORAGE_INFO_MEMO = #{storageInfoMemo}, " +
+                    "LAST_UPDATED_TIMESTAMP = CURRENT_TIMESTAMP " +
+                    "WHERE " +
+                    "GROUP_ID = #{groupId} AND " +
+                    "STORAGE_INFO_ID = #{storageInfoId}"
+    )int update(String groupId, int storageInfoId, String storageInfoName, String storageInfoPass, String storageInfoMemo);
 
     @Select(
             "SELECT nextval('storage_info_id_seq');"
