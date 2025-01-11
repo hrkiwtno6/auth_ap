@@ -22,7 +22,8 @@ public interface StorageInfoMapper {
                     "STORAGE_INFO_PASS, " +
                     "STORAGE_INFO_MEMO " +
                     "FROM TR_STORAGE_INFO_MANAGE " +
-                    "WHERE STORAGE_INFO_ID = #{storageInfoId}"
+                    "WHERE STORAGE_INFO_ID = #{storageInfoId}" +
+                    "ORDER BY STORAGE_INFO_ID"
     )
     ArrayList<StorageInfo> selectByPrimaryKey(int storageInfoId);
 
@@ -41,7 +42,8 @@ public interface StorageInfoMapper {
                     "STORAGE_INFO_PASS, " +
                     "STORAGE_INFO_MEMO " +
                     "FROM TR_STORAGE_INFO_MANAGE " +
-                    "WHERE GROUP_ID = #{groupId}"
+                    "WHERE GROUP_ID = #{groupId}" +
+                    "ORDER BY GROUP_ID,STORAGE_INFO_NAME"
     )
     ArrayList<StorageInfo> selectALL(String groupId);
     @Insert(
