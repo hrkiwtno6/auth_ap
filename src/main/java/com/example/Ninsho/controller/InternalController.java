@@ -111,4 +111,19 @@ public class InternalController {
         RegistStorageInfoOutDto outDto = new RegistStorageInfoOutDto(storageInfoId);
         return ResponseEntity.ok().body(outDto);
     }
+//    @PostMapping("/api/deleteStorageInfo")
+//    public ResponseEntity<RegistStorageInfoOutDto> v1DeleteStorageInfo(RequestEntity<String> requestEntity) {
+//        final JsonNode requestJson;
+//        try {
+//            requestJson = objectMapper.readTree(requestEntity.getBody());
+//        } catch (JsonProcessingException e) {
+//            return ResponseEntity.badRequest().body(null);
+//            //TODO レスポンスにRegistInfoOutDtoに対してエラーメッセージをつけて返すのか？エラーのthrow方式のお作法がわからない。
+//        }
+//        DeleteStorageInfoInDto inDto = new DeleteStorageInfoInDto(requestJson);
+//        int parseStorageInfoId = Integer.parseInt(inDto.getStorageInfoId());
+//        int storageInfoId = updateStorageInfoService.exec(inDto.getGroupId(), parseStorageInfoId);
+//        RegistStorageInfoOutDto outDto = new RegistStorageInfoOutDto(storageInfoId);
+//        return ResponseEntity.ok().body(outDto);
+//    }
 }
