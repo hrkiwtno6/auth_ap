@@ -1,25 +1,20 @@
 package com.example.Ninsho.controller;
 
-import com.example.Ninsho.*;
 import com.example.Ninsho.controller.dto.*;
 import com.example.Ninsho.entity.StorageInfo;
-import com.example.Ninsho.entity.User;
+import com.example.Ninsho.service.NinshoService;
 import com.example.Ninsho.service.RegistStorageInfoService;
 import com.example.Ninsho.service.RegistUserService;
 import com.example.Ninsho.service.SearchInfoService;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 @RestController
 public class InternalController {
@@ -45,9 +40,9 @@ public class InternalController {
     @PostMapping("/registUser")
     public ResponseEntity<UserOutDto> v1RegistUser(RequestEntity<String> requestEntity) {
         final JsonNode requestJson;
-        try{
+        try {
             requestJson = objectMapper.readTree(requestEntity.getBody());
-        }catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             return ResponseEntity.badRequest().body(null);
             //TODO レスポンスにRegistInfoOutDtoに対してエラーメッセージをつけて返すのか？エラーのthrow方式のお作法がわからない。
         }
@@ -60,9 +55,9 @@ public class InternalController {
     @PostMapping("/api/login")
     public ResponseEntity<UserOutDto> v1Login(RequestEntity<String> requestEntity) {
         final JsonNode requestJson;
-        try{
+        try {
             requestJson = objectMapper.readTree(requestEntity.getBody());
-        }catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             return ResponseEntity.badRequest().body(null);
             //TODO レスポンスにRegistInfoOutDtoに対してエラーメッセージをつけて返すのか？エラーのthrow方式のお作法がわからない。
         }
@@ -72,35 +67,35 @@ public class InternalController {
         return ResponseEntity.ok().body(outDto);
     }
 
-    @PostMapping("/api/registInfo")
+    @PostMapping("/api/registStorageInfo")
     public ResponseEntity<RegistInfoOutDto> v1RegistInfo(RequestEntity<String> requestEntity) {
         //OutDtoのオブジェクトを＜＞に詰めておく。
         //自分で基底オブジェクトを作ってその中にOutDtoを詰めてみるのもあり。（デフォルト値を詰める必要がない。）
         //基底オブジェクトがResponseEntityを使って書く三弾構成にする。
         final JsonNode requestJson;
-        try{
+        try {
             requestJson = objectMapper.readTree(requestEntity.getBody());
-        }catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             return ResponseEntity.badRequest().body(null);
             //TODO レスポンスにRegistInfoOutDtoに対してエラーメッセージをつけて返すのか？エラーのthrow方式のお作法がわからない。
         }
         RegistInfoInDto inDto = new RegistInfoInDto(requestJson);
-        int storageInfoId = registStorageInfoService.exec(inDto.getGroupId(),inDto.getStorageInfoName(), inDto.getStorageInfoPass(), inDto.getStorageInfoMemo());
+        int storageInfoId = registStorageInfoService.exec(inDto.getGroupId(), inDto.getStorageInfoName(), inDto.getStorageInfoPass(), inDto.getStorageInfoMemo());
         RegistInfoOutDto outDto = new RegistInfoOutDto(storageInfoId);
         return ResponseEntity.ok().body(outDto);
     }
 
-    @PostMapping("/api/search")
+    @PostMapping("/api/getStorageInfoList")
 
     public ResponseEntity<String> v1SearchInfo(RequestEntity<String> requestEntity) {
-    final JsonNode requestJson;
-    try{
-        requestJson = objectMapper.readTree(requestEntity.getBody());
-    }catch (JsonProcessingException e){
-        return ResponseEntity.badRequest().body("request body is invalid");
-    }
+        final JsonNode requestJson;
+        try {
+            requestJson = objectMapper.readTree(requestEntity.getBody());
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().body("request body is invalid");
+        }
 
-    final SearchInfoInDto inDto = new SearchInfoInDto(requestJson);
+        final SearchInfoInDto inDto = new SearchInfoInDto(requestJson);
         final ArrayList<StorageInfo> storageInfoList = searchInfoService.exec(inDto.getGroupId());
         SearchInfoOutDto outDto = new SearchInfoOutDto(storageInfoList);
         return ResponseEntity.ok().body(outDto.getJson().toString());

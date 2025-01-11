@@ -1,4 +1,4 @@
-package com.example.Ninsho;
+package com.example.Ninsho.service;
 
 import com.example.Ninsho.entity.User;
 import com.example.Ninsho.mapper.UserMapper;
