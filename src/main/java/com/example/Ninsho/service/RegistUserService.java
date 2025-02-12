@@ -16,7 +16,10 @@ public class RegistUserService {
         int userId = userMapper.generateSeq();
 //        String encloginPw = CryptoData.encrypt(loginPw,"keyabcd");
           String encloginPw ="abcd";
-        userMapper.regist(userId, loginId, encloginPw);
+        if(userMapper.regist(userId, loginId, encloginPw) != 1){
+            //TODO　Exceptionハンドラー
+            System.out.println("登録失敗");
+        }
         return userId;
     }
 }

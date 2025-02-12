@@ -33,7 +33,7 @@ public interface UserMapper {
                     " #{loginPw}" +
                     ")"
     )
-    void regist(int userId, String loginId, String loginPw);
+    int regist(int userId, String loginId, String loginPw);
     @Select(
             "SELECT nextval('user_id_seq');"
     )
