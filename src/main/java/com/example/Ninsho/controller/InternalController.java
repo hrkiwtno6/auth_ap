@@ -1,6 +1,8 @@
 package com.example.Ninsho.controller;
 
+import com.example.Ninsho.ExpiredDateChecker;
 import com.example.Ninsho.controller.dto.*;
+import com.example.Ninsho.entity.Auth;
 import com.example.Ninsho.entity.StorageInfo;
 import com.example.Ninsho.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class InternalController {
@@ -32,6 +35,8 @@ public class InternalController {
     UpdateStorageInfoService updateStorageInfoService;
     @Autowired
     DeleteStorageInfoService deleteStorageInfoService;
+    @Autowired
+    ExpiredDateChecker expiredDateChecker;
 
     @GetMapping("/hello")
     public String v1Hello() {
@@ -49,8 +54,8 @@ public class InternalController {
         }
         LoginInDto inDto = new LoginInDto(requestJson);
         int userId = registUserService.exec(inDto.getLoginId(), inDto.getLoginPw());
-        LoginOutDto outDto = new LoginOutDto(userId);
-        return ResponseEntity.ok().body(outDto);
+//        LoginOutDto outDto = new LoginOutDto(userId);
+        return ResponseEntity.ok().body(null);
     }
 
     @PostMapping("/api/login")
@@ -63,8 +68,8 @@ public class InternalController {
             //TODO レスポンスにRegistInfoOutDtoに対してエラーメッセージをつけて返すのか？エラーのthrow方式のお作法がわからない。
         }
         LoginInDto inDto = new LoginInDto(requestJson);
-        int userId = ninshoService.exec(inDto.getLoginId(), inDto.getLoginPw());
-        LoginOutDto outDto = new LoginOutDto(userId);
+        NinshoService.ExecOutDto result = ninshoService.exec(inDto.getLoginId(), inDto.getLoginPw());
+        LoginOutDto outDto = new LoginOutDto(result.userId, result.accessToken);
         return ResponseEntity.ok().body(outDto);
     }
     @PostMapping("/api/getStorageInfoList")
@@ -75,8 +80,11 @@ public class InternalController {
         } catch (JsonProcessingException e) {
             return ResponseEntity.badRequest().body("request body is invalid");
         }
-
         final GetStorageInfoListInDto inDto = new GetStorageInfoListInDto(requestJson);
+//        if(!expiredDateChecker.isExpired(inDto.getGroupId()){
+//
+//        }
+
         final ArrayList<StorageInfo> storageInfoList = searchInfoService.exec(inDto.getGroupId());
         GetStorageInfoListOutDto outDto = new GetStorageInfoListOutDto(storageInfoList);
         return ResponseEntity.ok().body(outDto.getJson().toString());

@@ -61,7 +61,7 @@ public interface StorageInfoMapper {
                     " #{storageInfoMemo}" +
                     ")"
     )
-    void regist(String groupId, int storageInfoId, String storageInfoName, String storageInfoPass, String storageInfoMemo);
+    int regist(String groupId, int storageInfoId, String storageInfoName, String storageInfoPass, String storageInfoMemo);
 
     @Update(
             "UPDATE TR_STORAGE_INFO_MANAGE " +

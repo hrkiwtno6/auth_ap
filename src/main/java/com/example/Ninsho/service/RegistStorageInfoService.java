@@ -11,7 +11,10 @@ public class RegistStorageInfoService {
     private StorageInfoMapper storageInfoMapper;
     public int exec(String groupId, String storageInfoName, String storageInfoPass, String stratgeInfoMemo) {
         int storageInfoId = storageInfoMapper.generateSeq();
-        storageInfoMapper.regist(groupId, storageInfoId, storageInfoName, storageInfoPass, stratgeInfoMemo);
+        if(storageInfoMapper.regist(groupId, storageInfoId, storageInfoName, storageInfoPass, stratgeInfoMemo) != 1){
+            //TODO　Exceptionハンドラー
+            System.out.println("登録失敗");
+        }
         return storageInfoId;
     }
 }
