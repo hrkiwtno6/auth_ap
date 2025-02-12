@@ -44,7 +44,7 @@ public class NinshoService {
                 User autholizedUser = userList.getFirst();
             }
             userId = userList.getFirst().getUserId();
-            List<Auth> authList = authManageMapper.selectByPrimaryKey(userId);
+            List<Auth> authList = authManageMapper.selectByUserId(userId);
             if (authList.size() == 0) {
                 accessToken = RandomGenerator.generateRandom(64);
                 int resuleRegist = authManageMapper.regist(userId, accessToken);
