@@ -15,22 +15,39 @@ public interface AuthManageMapper {
     })
     @Select(
             "SELECT " +
-                    "USER_ID, " +
                     "ACCESS_TOKEN, " +
+                    "USER_ID, " +
+                    "EXPIRED_DATE " +
+                    "FROM TR_AUTH_MANAGE " +
+                    "WHERE " +
+                    "ACCESS_TOKEN = #{accessToken} AND " +
+                    "EXPIRED_DATE > CURRENT_TIMESTAMP"
+    )
+    ArrayList<Auth> selectByPrimaryKey(String accessToken);
+
+    @ConstructorArgs({
+            @Arg(column = "USER_ID", javaType = int.class, id = true,name = "userId"),
+            @Arg(column = "ACCESS_TOKEN", javaType = String.class,name = "accessToken"),
+            @Arg(column = "EXPIRED_DATE", javaType = String.class,name = "expiredDate")
+    })
+    @Select(
+            "SELECT " +
+                    "ACCESS_TOKEN, " +
+                    "USER_ID, " +
                     "EXPIRED_DATE " +
                     "FROM TR_AUTH_MANAGE " +
                     "WHERE " +
                     "USER_ID = #{userId} AND " +
                     "EXPIRED_DATE > CURRENT_TIMESTAMP"
     )
-    ArrayList<Auth> selectByPrimaryKey(int userId);
+    ArrayList<Auth> selectByUserId(int userId);
 
     @Insert(
             "INSERT INTO TR_AUTH_MANAGE " +
-                    "(USER_ID, ACCESS_TOKEN, EXPIRED_DATE) " +
+                    "(ACCESS_TOKEN, USER_ID, EXPIRED_DATE) " +
                     "VALUES " +
-                    "(#{userId}," +
-                    " #{accessToken}," +
+                    "(#{accessToken}," +
+                    " #{userId}," +
                     " CURRENT_TIMESTAMP + INTERVAL '30 minutes')"
     )
     int regist(int userId, String accessToken);
